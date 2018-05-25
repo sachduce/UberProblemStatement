@@ -19,20 +19,20 @@ namespace UberProblemStatement.BusinessRules
             int minFare = 50;
             // Cancellation fare 
             int cancellationFare = 50;
+            double waitingFare = 0;
+            if (fareParameter.WaitingTime > 4)
+            {
+                waitingFare = Math.Round(fareParameter.WaitingTime - 4) * 10;
+            }
             // ride cancellation fare logic
             if (fareParameter.RideCancelled == true)
             {
-                return cancellationFare;
+                return cancellationFare + (int)waitingFare;
             }
             // Fare Calculation Logic
             else
             {
                 double baseFare = fareParameter.Surge* (fareParameter.Distance * 8 + fareParameter.TravelTime * 1);
-                double waitingFare=0;
-                if (fareParameter.WaitingTime > 4)
-                {
-                     waitingFare = Math.Round(fareParameter.WaitingTime-4)*10;
-                }
                 int actualFare = (int)(baseFare+waitingFare);
                 // returns max of minFare and actualFare
                 return actualFare>minFare? actualFare:minFare;
